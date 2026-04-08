@@ -14,10 +14,6 @@
       width: 100vw;
       margin-left: calc(50% - 50vw);
       overflow: auto hidden;
-      /* Trailing gutter on the scroll container itself (not the flex track)
-         — modern Chrome/Safari/FF correctly include scroll-container padding
-         in scrollWidth, unlike trailing padding/margin on a flex item. */
-      padding-right: 5vw;
       /* proximity, not mandatory: mandatory refuses to leave a card-aligned
          position, which makes the trailing ::after spacer unreachable and
          caps the scroll short of the true end. proximity snaps when *near*
