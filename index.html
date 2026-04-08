@@ -57,17 +57,22 @@
       scroll-snap-align: start;
     }
 
-    /* Hover reveal — fade in the three children that ship at opacity: 0
+    /* Hover/tap reveal — fade in the three children that ship at opacity: 0
        (overlay tint, subhead text, and the minus icon). All three live
-       inside .moods-card so a single :hover hook covers them. */
+       inside .moods-card so a single hook covers them. The .is-active
+       class is toggled via JS on tap so the reveal works on touch devices
+       (where :hover is unreliable / sticky). */
     .moods-card .moods-card__overlay,
     .moods-card .mood-cards__fg-subhead,
     .moods-card .mood-cards__fg-icon--minus {
       transition: opacity 0.3s ease;
     }
     .moods-card:hover .moods-card__overlay,
+    .moods-card.is-active .moods-card__overlay,
     .moods-card:hover .mood-cards__fg-subhead,
-    .moods-card:hover .mood-cards__fg-icon--minus {
+    .moods-card.is-active .mood-cards__fg-subhead,
+    .moods-card:hover .mood-cards__fg-icon--minus,
+    .moods-card.is-active .mood-cards__fg-icon--minus {
       opacity: 1;
     }
 
@@ -177,9 +182,31 @@
         scroller.addEventListener('pointercancel', endDrag);
 
         // Swallow click-through after a drag so cards don't navigate mid-swipe.
+        // Otherwise, treat the click as a tap and toggle .is-active on the
+        // tapped card so the hover-reveal styles fire on touch devices too.
         scroller.addEventListener('click', function (e) {
-          if (moved) { e.preventDefault(); e.stopPropagation(); }
+          if (moved) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+          var card = e.target.closest('.moods-card');
+          if (!card || !scroller.contains(card)) return;
+          var willActivate = !card.classList.contains('is-active');
+          // Single-active: clear any other active siblings.
+          scroller.querySelectorAll('.moods-card.is-active').forEach(function (el) {
+            if (el !== card) el.classList.remove('is-active');
+          });
+          card.classList.toggle('is-active', willActivate);
         }, true);
+
+        // Tapping outside any card clears the active state.
+        document.addEventListener('click', function (e) {
+          if (e.target.closest('.moods-card')) return;
+          scroller.querySelectorAll('.moods-card.is-active').forEach(function (el) {
+            el.classList.remove('is-active');
+          });
+        });
       }
 
       function initAll() {
