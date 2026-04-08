@@ -42,20 +42,14 @@
            .container-large → max-width: 74rem, centered
            → column left edge = max(5%, calc(50vw - 37rem)) */
       padding-left: max(5%, calc(50vw - 37rem));
-      /* padding-right intentionally unset — browsers drop trailing padding
-         on horizontally overflowing flex containers, so we use an ::after
-         pseudo-element as a real flex item instead. */
       padding-right: 0;
     }
-    /* Trailing spacer so the last card has 5vw breathing room to the
-       viewport edge when scrolled fully right. Uses the same viewport
-       math as the left padding, anchored to padding-global's 5% instead
-       of container-large's column gutter. */
-    .contest-moods__track::after {
-      content: "";
-      flex: 0 0 5vw;
-      align-self: stretch;
-      pointer-events: none;
+    /* Trailing gutter via the last card's margin-right (not padding-right
+       on the track — browsers drop that on overflowing flex containers,
+       and a flex `gap` would also stack with it). margin-right on a flex
+       item is honored exactly and doesn't interact with the gap. */
+    .contest-moods__track > .moods-card:last-child {
+      margin-right: 5vw;
     }
     .contest-moods__carousel:active { cursor: grabbing; }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
