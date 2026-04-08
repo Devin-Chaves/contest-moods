@@ -39,7 +39,13 @@
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
     .contest-moods__carousel::-webkit-scrollbar { display: none; }
     .contest-moods__carousel { scrollbar-width: none; }
-    .moods-card { scroll-snap-align: start; }
+    /* Hold intrinsic width so cards overflow the track instead of shrinking
+       to fit. Without this, Webflow's default flex-shrink: 1 makes 4 cards
+       collapse to exactly fill the container — no scroll. */
+    .moods-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
 
     /* Disabled state for prev/next links at the carousel's start/end */
     .contest-moods__controls__prev.is-disabled,
