@@ -38,12 +38,20 @@
            .container-large → max-width: 74rem, centered
            → column left edge = max(5%, calc(50vw - 37rem)) */
       padding-left: max(5%, calc(50vw - 37rem));
-      /* Trailing edge uses padding-global's 5% only (not container-large's
-         gutter) so when scrolled fully right, the last card has matching
-         5vw breathing room to the viewport edge — same viewport-relative
-         math as the left, just anchored to padding-global instead of
-         container-large. */
-      padding-right: 5vw;
+      /* padding-right intentionally unset — browsers drop trailing padding
+         on horizontally overflowing flex containers, so we use an ::after
+         pseudo-element as a real flex item instead. */
+      padding-right: 0;
+    }
+    /* Trailing spacer so the last card has 5vw breathing room to the
+       viewport edge when scrolled fully right. Uses the same viewport
+       math as the left padding, anchored to padding-global's 5% instead
+       of container-large's column gutter. */
+    .contest-moods__track::after {
+      content: "";
+      flex: 0 0 5vw;
+      align-self: stretch;
+      pointer-events: none;
     }
     .contest-moods__carousel:active { cursor: grabbing; }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
