@@ -6,18 +6,34 @@
   <title>Contest Moods</title>
   <style>
 
-    /* Scroll container — mirrors .pricing-caro-scroll-container */
+    /* Scroll container — mirrors .pricing-caro-scroll-container.
+       Breaks out of its parent to span the full viewport so cards can
+       scroll off the right edge, while the first card lines up with the
+       sibling .padding-global > .container-large column on the left. */
     .contest-moods__carousel {
-      width: 100%;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
       overflow: auto hidden;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
+      /* Snap target aligns with container-large left edge, not viewport edge */
+      scroll-padding-left: max(5%, calc(50vw - 37rem));
       cursor: grab;
       user-select: none;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-y;
       overscroll-behavior-x: contain;
       padding-bottom: 0.5rem;
+    }
+
+    /* Track inherits flex/gap from Webflow; we only add the gutter padding
+       so the first/last cards line up with the container-large column.
+         .padding-global → padding-left: 5%
+         .container-large → max-width: 74rem
+         → the inner column's left edge is at max(5%, calc(50vw - 37rem)) */
+    .contest-moods__track {
+      padding-left: max(5%, calc(50vw - 37rem));
+      padding-right: max(5%, calc(50vw - 37rem));
     }
     .contest-moods__carousel:active { cursor: grabbing; }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
