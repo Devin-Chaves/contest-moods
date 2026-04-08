@@ -32,8 +32,18 @@
          .container-large → max-width: 74rem
          → the inner column's left edge is at max(5%, calc(50vw - 37rem)) */
     .contest-moods__track {
+      /* Leading edge aligns with container-large column so the first card
+         lines up with the titles / controls above and below:
+           .padding-global → 5% side padding
+           .container-large → max-width: 74rem, centered
+           → column left edge = max(5%, calc(50vw - 37rem)) */
       padding-left: max(5%, calc(50vw - 37rem));
-      padding-right: max(5%, calc(50vw - 37rem));
+      /* Trailing edge uses padding-global's 5% only (not container-large's
+         gutter) so when scrolled fully right, the last card has matching
+         5vw breathing room to the viewport edge — same viewport-relative
+         math as the left, just anchored to padding-global instead of
+         container-large. */
+      padding-right: 5vw;
     }
     .contest-moods__carousel:active { cursor: grabbing; }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
