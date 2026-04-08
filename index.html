@@ -57,6 +57,20 @@
       scroll-snap-align: start;
     }
 
+    /* Hover reveal — fade in the three children that ship at opacity: 0
+       (overlay tint, subhead text, and the minus icon). All three live
+       inside .moods-card so a single :hover hook covers them. */
+    .moods-card .moods-card__overlay,
+    .moods-card .mood-cards__fg-subhead,
+    .moods-card .mood-cards__fg-icon--minus {
+      transition: opacity 0.3s ease;
+    }
+    .moods-card:hover .moods-card__overlay,
+    .moods-card:hover .mood-cards__fg-subhead,
+    .moods-card:hover .mood-cards__fg-icon--minus {
+      opacity: 1;
+    }
+
     /* Disabled state for prev/next links at the carousel's start/end */
     .contest-moods__controls__prev.is-disabled,
     .contest-moods__controls__next.is-disabled {
