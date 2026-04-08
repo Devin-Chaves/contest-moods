@@ -14,6 +14,10 @@
       width: 100vw;
       margin-left: calc(50% - 50vw);
       overflow: auto hidden;
+      /* Trailing gutter on the scroll container itself (not the flex track)
+         — modern Chrome/Safari/FF correctly include scroll-container padding
+         in scrollWidth, unlike trailing padding/margin on a flex item. */
+      padding-right: 5vw;
       /* proximity, not mandatory: mandatory refuses to leave a card-aligned
          position, which makes the trailing ::after spacer unreachable and
          caps the scroll short of the true end. proximity snaps when *near*
@@ -40,16 +44,10 @@
          lines up with the titles / controls above and below:
            .padding-global → 5% side padding
            .container-large → max-width: 74rem, centered
-           → column left edge = max(5%, calc(50vw - 37rem)) */
+           → column left edge = max(5%, calc(50vw - 37rem))
+         Trailing edge handled by scroll container's padding-right above. */
       padding-left: max(5%, calc(50vw - 37rem));
       padding-right: 0;
-    }
-    /* Trailing gutter via the last card's margin-right (not padding-right
-       on the track — browsers drop that on overflowing flex containers,
-       and a flex `gap` would also stack with it). margin-right on a flex
-       item is honored exactly and doesn't interact with the gap. */
-    .contest-moods__track > .moods-card:last-child {
-      margin-right: 5vw;
     }
     .contest-moods__carousel:active { cursor: grabbing; }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
