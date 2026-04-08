@@ -7,7 +7,7 @@
   <style>
 
     /* Scroll container — mirrors .pricing-caro-scroll-container */
-    .contest-caro-scroll-container {
+    .contest-moods__carousel {
       width: 100%;
       overflow: auto hidden;
       scroll-snap-type: x mandatory;
@@ -15,264 +15,136 @@
       cursor: grab;
       user-select: none;
       -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      overscroll-behavior-x: contain;
       padding-bottom: 0.5rem;
     }
-    .contest-caro-scroll-container:active { cursor: grabbing; }
-    .contest-caro-scroll-container::-webkit-scrollbar { display: none; }
-    .contest-caro-scroll-container { scrollbar-width: none; }
+    .contest-moods__carousel:active { cursor: grabbing; }
+    .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
+    .contest-moods__carousel::-webkit-scrollbar { display: none; }
+    .contest-moods__carousel { scrollbar-width: none; }
+    .moods-card { scroll-snap-align: start; }
 
-    /* --- Only the things Felix doesn't already give us --- */
-
-    .contest-caro__titles { margin-bottom: 2rem; }
-
-    /* Flex track. Not reusing .pricing-caro__wrap because Felix sets
-       padding-left: calc(-37rem + 50vw) on it, which assumes the parent
-       is a 100vw scroll container — we use 100% width instead. */
-    .contest-caro__wrap {
-      display: flex;
-      gap: 1rem;
-    }
-
-    /* Image card. Felix's .pricing-caro-card is a white data card
-       (18.75rem × 24rem, padded, bordered) — wrong for an image card,
-       so this is fully custom. */
-    .contest-caro-card {
-      position: relative;
-      flex: 0 0 auto;
-      flex-shrink: 0;
-      scroll-snap-align: start;
-      width: 17rem;   /* 272px — 4-up in a 74rem container with 1rem gap */
-      height: 21rem;  /* 336px */
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      color: #fff;
-      background: var(--slate-outline-90, #e2e2e1);
-      isolation: isolate;
-    }
-    .contest-caro-card img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    /* Disabled state for prev/next links at the carousel's start/end */
+    .contest-moods__controls__prev.is-disabled,
+    .contest-moods__controls__next.is-disabled {
+      opacity: 0.35;
       pointer-events: none;
-      transition: transform .5s ease;
+      cursor: default;
     }
-    .contest-caro-card:hover img { transform: scale(1.04); }
-    .contest-caro-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(0,0,0,0.42) 0%,
-        rgba(0,0,0,0.08) 38%,
-        rgba(0,0,0,0) 60%,
-        rgba(0,0,0,0.20) 100%
-      );
-    }
-    .contest-caro-card__label {
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      right: 2.5rem;
-      color: #fff;
-      font-size: 1.125rem;
-      font-weight: 500;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.35);
-    }
-    .contest-caro-card__cta {
-      position: absolute;
-      right: 1rem;
-      bottom: 1rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.92);
-      color: #1f1e1c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
-      transition: background .2s ease, transform .2s ease;
-    }
-    .contest-caro-card:hover .contest-caro-card__cta {
-      background: #fff;
-      transform: translateX(2px);
-    }
-    .contest-caro-card__cta svg { width: 14px; height: 14px; display: block; }
 
-    /* Prev/next row — base button style comes from Felix's
-       .button.is-secondary.is-small.is-icon-only. We only override
-       the shape to be a 36px circle. */
-    .contest-caro__controls {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-      margin-top: 1.25rem;
-    }
-    .contest-caro__nav.button {
-      width: 36px;
-      height: 36px;
-      min-height: 36px;
-      padding: 0;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .contest-caro__nav svg { width: 14px; height: 14px; display: block; }
-    .contest-caro__nav:disabled { opacity: 0.35; cursor: default; }
 
-    @media (max-width: 640px) {
-      .contest-caro-card { width: 15rem; height: 19rem; }
-    }
   </style>
 </head>
 <body>
 
-  <section class="contest-caro padding-global">
-    <div class="container-large">
-
-      <div class="contest-caro__titles">
-        <h2 class="pricing-caro__head">Win a trip of a lifetime</h2>
-        <p class="pricing-caro__subhead">
-          We're giving away the chance to escape to a remote, luxury hotel in
-          Iceland — a place designed for true rest, reflection, and reset.
-        </p>
-      </div>
-
-      <div class="contest-caro-scroll-container">
-        <div class="contest-caro__wrap">
-
-          <a class="contest-caro-card" href="#" data-mood="journey">
-            <img src="https://picsum.photos/seed/iceland-journey/540/672" alt="Iceland mountain landscape" loading="lazy" />
-            <span class="contest-caro-card__label">Journey off the beaten path</span>
-            <span class="contest-caro-card__cta" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </a>
-
-          <a class="contest-caro-card" href="#" data-mood="reset">
-            <img src="https://picsum.photos/seed/iceland-reset/540/672" alt="Hotel bedroom with mountain view" loading="lazy" />
-            <span class="contest-caro-card__label">Reset &amp; recharge</span>
-            <span class="contest-caro-card__cta" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </a>
-
-          <a class="contest-caro-card" href="#" data-mood="explore">
-            <img src="https://picsum.photos/seed/iceland-explore/540/672" alt="Waterfall in Iceland" loading="lazy" />
-            <span class="contest-caro-card__label">Explore extraordinary</span>
-            <span class="contest-caro-card__cta" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </a>
-
-          <a class="contest-caro-card" href="#" data-mood="adventure">
-            <img src="https://picsum.photos/seed/iceland-adventure/540/672" alt="Hiker on an Icelandic mountain trail" loading="lazy" />
-            <span class="contest-caro-card__label">Adventures included</span>
-            <span class="contest-caro-card__cta" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </a>
-
-        </div>
-      </div>
-
-      <div class="contest-caro__controls">
-        <button class="button is-secondary is-small is-icon-only contest-caro__nav" type="button" data-dir="-1" aria-label="Previous">
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="button is-secondary is-small is-icon-only contest-caro__nav" type="button" data-dir="1" aria-label="Next">
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-    </div>
-  </section>
 
   <script>
     (function () {
-      // Scope to the most recently inserted .contest-caro so this works both
-      // standalone on GitHub Pages and after fetch-injection into Webflow.
-      var roots = document.querySelectorAll('.contest-caro');
-      var root = roots[roots.length - 1];
-      if (!root) return;
+      // Initialize every .contest-moods__carousel on the page.
+      function init(scroller) {
+        if (!scroller || scroller.dataset.contestMoodsInit === '1') return;
+        scroller.dataset.contestMoodsInit = '1';
 
-      var scroller = root.querySelector('.contest-caro-scroll-container');
-      var track = root.querySelector('.contest-caro__wrap');
-      var card = root.querySelector('.contest-caro-card');
-      var prev = root.querySelector('.contest-caro__nav[data-dir="-1"]');
-      var next = root.querySelector('.contest-caro__nav[data-dir="1"]');
-      if (!scroller || !track || !card) return;
+        var track = scroller.querySelector('.contest-moods__track');
+        var firstCard = scroller.querySelector('.moods-card');
+        if (!track || !firstCard) return;
 
-      function step() {
-        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 16;
-        return card.offsetWidth + gap;
+        // Prev/next controls live outside the scroller, in a sibling
+        // .contest-moods__controls block. Find the nearest pair by walking
+        // up to a common ancestor (or fall back to document-wide).
+        var scope = scroller.closest('.contest-moods, section, main, body') || document;
+        var prev = scope.querySelector('.contest-moods__controls__prev');
+        var next = scope.querySelector('.contest-moods__controls__next');
+
+        function step() {
+          var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+          return firstCard.offsetWidth + gap;
+        }
+
+        function updateNav() {
+          var max = scroller.scrollWidth - scroller.clientWidth;
+          var atStart = scroller.scrollLeft <= 4;
+          var atEnd = scroller.scrollLeft >= max - 4;
+          if (prev) {
+            prev.classList.toggle('is-disabled', atStart);
+            prev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+          }
+          if (next) {
+            next.classList.toggle('is-disabled', atEnd);
+            next.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+          }
+        }
+
+        function nudge(dir) {
+          scroller.scrollBy({ left: dir * step(), behavior: 'smooth' });
+        }
+
+        if (prev) prev.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (prev.classList.contains('is-disabled')) return;
+          nudge(-1);
+        });
+        if (next) next.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (next.classList.contains('is-disabled')) return;
+          nudge(1);
+        });
+
+        scroller.addEventListener('scroll', updateNav, { passive: true });
+        window.addEventListener('resize', updateNav);
+        updateNav();
+
+        // Drag-to-scroll (matches cursor: grab / grabbing in CSS)
+        var isDown = false;
+        var startX = 0;
+        var startLeft = 0;
+        var moved = false;
+
+        scroller.addEventListener('pointerdown', function (e) {
+          // Only primary mouse button / touch / pen
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          isDown = true;
+          moved = false;
+          startX = e.clientX;
+          startLeft = scroller.scrollLeft;
+          scroller.classList.add('is-dragging');
+          try { scroller.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+
+        scroller.addEventListener('pointermove', function (e) {
+          if (!isDown) return;
+          var dx = e.clientX - startX;
+          if (Math.abs(dx) > 3) moved = true;
+          if (moved) {
+            e.preventDefault();
+            scroller.scrollLeft = startLeft - dx;
+          }
+        });
+
+        function endDrag() {
+          if (!isDown) return;
+          isDown = false;
+          scroller.classList.remove('is-dragging');
+        }
+        scroller.addEventListener('pointerup', endDrag);
+        scroller.addEventListener('pointercancel', endDrag);
+
+        // Swallow click-through after a drag so cards don't navigate mid-swipe.
+        scroller.addEventListener('click', function (e) {
+          if (moved) { e.preventDefault(); e.stopPropagation(); }
+        }, true);
       }
 
-      function update() {
-        if (!prev || !next) return;
-        var max = scroller.scrollWidth - scroller.clientWidth;
-        prev.disabled = scroller.scrollLeft <= 2;
-        next.disabled = scroller.scrollLeft >= max - 2;
+      function initAll() {
+        document.querySelectorAll('.contest-moods__carousel').forEach(init);
       }
 
-      if (prev) prev.addEventListener('click', function () {
-        scroller.scrollBy({ left: -step(), behavior: 'smooth' });
-      });
-      if (next) next.addEventListener('click', function () {
-        scroller.scrollBy({ left: step(), behavior: 'smooth' });
-      });
-
-      scroller.addEventListener('scroll', update);
-      window.addEventListener('resize', update);
-      update();
-
-      // Drag-to-scroll (matches cursor: grab / grabbing in CSS)
-      var isDown = false;
-      var startX = 0;
-      var startLeft = 0;
-      var moved = false;
-
-      scroller.addEventListener('pointerdown', function (e) {
-        isDown = true;
-        moved = false;
-        startX = e.clientX;
-        startLeft = scroller.scrollLeft;
-        try { scroller.setPointerCapture(e.pointerId); } catch (_) {}
-      });
-      scroller.addEventListener('pointermove', function (e) {
-        if (!isDown) return;
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 3) moved = true;
-        scroller.scrollLeft = startLeft - dx;
-      });
-      function endDrag() { isDown = false; }
-      scroller.addEventListener('pointerup', endDrag);
-      scroller.addEventListener('pointercancel', endDrag);
-      scroller.addEventListener('pointerleave', endDrag);
-
-      // Swallow click-through after a drag so cards don't navigate mid-swipe.
-      scroller.addEventListener('click', function (e) {
-        if (moved) { e.preventDefault(); e.stopPropagation(); }
-      }, true);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+      } else {
+        initAll();
+      }
     })();
   </script>
 </body>
