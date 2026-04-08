@@ -14,7 +14,11 @@
       width: 100vw;
       margin-left: calc(50% - 50vw);
       overflow: auto hidden;
-      scroll-snap-type: x mandatory;
+      /* proximity, not mandatory: mandatory refuses to leave a card-aligned
+         position, which makes the trailing ::after spacer unreachable and
+         caps the scroll short of the true end. proximity snaps when *near*
+         a card but lets the user reach scroll-end and see the 5vw gutter. */
+      scroll-snap-type: x proximity;
       scroll-behavior: smooth;
       /* Snap target aligns with container-large left edge, not viewport edge */
       scroll-padding-left: max(5%, calc(50vw - 37rem));
