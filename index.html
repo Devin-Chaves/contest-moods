@@ -22,7 +22,6 @@
       scroll-behavior: smooth;
       /* Snap target aligns with container-large left edge, not viewport edge */
       scroll-padding-left: max(5%, calc(50vw - 37rem));
-      cursor: grab;
       user-select: none;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-y;
@@ -45,7 +44,13 @@
       padding-left: max(5%, calc(50vw - 37rem));
       padding-right: 0;
     }
-    .contest-moods__carousel:active { cursor: grabbing; }
+    @media (hover: none) {
+      .contest-moods__carousel { cursor: grab; }
+      .contest-moods__carousel:active { cursor: grabbing; }
+    }
+    @media (hover: hover) {
+      .contest-moods__carousel { cursor: default; }
+    }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
     .contest-moods__carousel::-webkit-scrollbar { display: none; }
     .contest-moods__carousel { scrollbar-width: none; }
@@ -167,8 +172,9 @@
         var moved = false;
 
         scroller.addEventListener('pointerdown', function (e) {
-          // Only primary mouse button / touch / pen
-          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          // Skip mouse — drag fights hover states on desktop.
+          // Touch/pen only.
+          if (e.pointerType === 'mouse') return;
           isDown = true;
           moved = false;
           startX = e.clientX;
