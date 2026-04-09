@@ -129,10 +129,15 @@
           return firstCard.offsetWidth + gap;
         }
 
+        var lastAtStart = null;
+        var lastAtEnd = null;
         function updateNav() {
           var max = scroller.scrollWidth - scroller.clientWidth;
           var atStart = scroller.scrollLeft <= 4;
           var atEnd = scroller.scrollLeft >= max - 4;
+          if (atStart === lastAtStart && atEnd === lastAtEnd) return;
+          lastAtStart = atStart;
+          lastAtEnd = atEnd;
           if (prev) {
             prev.classList.toggle('is-disabled', atStart);
             prev.classList.toggle('is-active', !atStart);
