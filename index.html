@@ -19,7 +19,6 @@
          caps the scroll short of the true end. proximity snaps when *near*
          a card but lets the user reach scroll-end and see the 5vw gutter. */
       scroll-snap-type: x proximity;
-      scroll-behavior: smooth;
       /* Snap target aligns with container-large left edge, not viewport edge */
       scroll-padding-left: max(5%, calc(50vw - 37rem));
       user-select: none;
@@ -161,7 +160,14 @@
           nudge(1);
         });
 
-        scroller.addEventListener('scroll', updateNav, { passive: true });
+        var navRaf = 0;
+        scroller.addEventListener('scroll', function () {
+          if (navRaf) return;
+          navRaf = requestAnimationFrame(function () {
+            navRaf = 0;
+            updateNav();
+          });
+        }, { passive: true });
         updateNav();
 
         // Drag-to-scroll (matches cursor: grab / grabbing in CSS)
