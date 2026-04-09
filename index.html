@@ -84,6 +84,18 @@
       cursor: default;
     }
 
+    /* Active state — prev gets a fill when the carousel has scrolled
+       forward (there's content to go back to), next gets a fill when
+       there's still content ahead (i.e. not at end). */
+    .contest-moods__controls__prev,
+    .contest-moods__controls__next {
+      transition: background-color 0.2s ease, opacity 0.2s ease;
+    }
+    .contest-moods__controls__prev.is-active,
+    .contest-moods__controls__next.is-active {
+      background-color: rgba(49, 48, 47, 0.05);
+    }
+
 
   </style>
 </head>
@@ -119,10 +131,12 @@
           var atEnd = scroller.scrollLeft >= max - 4;
           if (prev) {
             prev.classList.toggle('is-disabled', atStart);
+            prev.classList.toggle('is-active', !atStart);
             prev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
           }
           if (next) {
             next.classList.toggle('is-disabled', atEnd);
+            next.classList.toggle('is-active', !atEnd);
             next.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
           }
         }
