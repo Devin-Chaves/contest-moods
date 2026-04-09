@@ -154,15 +154,14 @@
           e.preventDefault();
           if (prev.classList.contains('is-disabled')) return;
           nudge(-1);
-          setTimeout(updateNav, 400);
         });
         if (next) next.addEventListener('click', function (e) {
           e.preventDefault();
           if (next.classList.contains('is-disabled')) return;
           nudge(1);
-          setTimeout(updateNav, 400);
         });
 
+        scroller.addEventListener('scroll', updateNav, { passive: true });
         updateNav();
 
         // Drag-to-scroll (matches cursor: grab / grabbing in CSS)
@@ -197,7 +196,6 @@
           if (!isDown) return;
           isDown = false;
           scroller.classList.remove('is-dragging');
-          updateNav();
         }
         scroller.addEventListener('pointerup', endDrag);
         scroller.addEventListener('pointercancel', endDrag);
