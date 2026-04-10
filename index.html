@@ -13,7 +13,8 @@
     .contest-moods__carousel {
       width: 100vw;
       margin-left: calc(50% - 50vw);
-      overflow: auto hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       /* proximity, not mandatory: mandatory refuses to leave a card-aligned
          position, which makes the trailing ::after spacer unreachable and
          caps the scroll short of the true end. proximity snaps when *near*
@@ -22,8 +23,7 @@
       /* Snap target aligns with container-large left edge, not viewport edge */
       scroll-padding-left: max(5%, calc(50vw - 37rem));
       user-select: none;
-      -webkit-overflow-scrolling: touch;
-      touch-action: pan-y;
+      touch-action: pan-x pan-y;
       overscroll-behavior-x: contain;
       padding-bottom: 0.5rem;
     }
@@ -43,12 +43,9 @@
       padding-left: max(5%, calc(50vw - 37rem));
       padding-right: 0;
     }
-    @media (hover: none) {
+    @media (hover: hover) {
       .contest-moods__carousel { cursor: grab; }
       .contest-moods__carousel:active { cursor: grabbing; }
-    }
-    @media (hover: hover) {
-      .contest-moods__carousel { cursor: default; }
     }
     .contest-moods__carousel.is-dragging { scroll-snap-type: none; }
     .contest-moods__carousel::-webkit-scrollbar { display: none; }
@@ -182,9 +179,8 @@
         var moved = false;
 
         scroller.addEventListener('pointerdown', function (e) {
-          // Skip mouse — drag fights hover states on desktop.
-          // Touch/pen only.
-          if (e.pointerType === 'mouse') return;
+          // Mouse-only drag-to-scroll — touch uses native overflow scroll.
+          if (e.pointerType !== 'mouse') return;
           isDown = true;
           moved = false;
           startX = e.clientX;
